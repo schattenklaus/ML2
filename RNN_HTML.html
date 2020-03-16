@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0016)http://localhost -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <base href="file:///C:\Users\Asus\Documents\Markdown Weblog Posts\" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link href="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\..\scripts\bootstrap\css\bootstrap_noprint.min.css" rel="stylesheet"/>
+    <link href="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\..\scripts\fontawesome\css\font-awesome.min.css" rel="stylesheet"/>
+    <link href="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\Theme.css" rel="stylesheet"/>
+    
+    <script src="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\..\scripts\jquery.min.js"></script>
+    <link href="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\..\scripts\highlightjs/styles/github-gist.css" rel="stylesheet" />
+    <script src="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\..\scripts\highlightjs\highlight.pack.js"></script>
+    <script src="file:///C:\Program Files\Markdown Monster\PreviewThemes\Github\..\scripts\preview.js"></script>
+</head>
+<body>
+<div id="MainContent">
+    <!-- Markdown Monster Content -->
+    <h1 id="recurrent-neural-networks-rnn"><a id="pragma-line-0"></a>Recurrent Neural Networks (RNN)</h1>
+<h2 id="introduction"><a id="pragma-line-1"></a>Introduction</h2>
+<p id="pragma-line-3">Humans don’t start their thinking from scratch every second. As you read this text, you <strong>understand each word based on your understanding of previous words</strong>. You don’t throw everything away and start thinking from scratch again. <strong>Your thoughts have persistence</strong>.</p>
+<p id="pragma-line-5"><u>Traditional neural networks can’t do this</u>
+, and it seems like a major shortcoming. For example, imagine you want to classify what kind of event is happening at every point in a movie. It’s unclear how a traditional neural network could use its reasoning about previous events in the film to inform later ones.</p>
+<p id="pragma-line-8">Recurrent neural networks address this issue, allowing information to persist.</p>
+<center>
+<p id="pragma-line-12"><img src="RNN-rolled.png" width="15%" alt="" /></p>
+</center>
+<p id="pragma-line-16">In the above diagram, just one neural network cell, <code>A</code>, is depicted. It looks at some input <code>x_t</code> and outputs a value <code>h_t</code>. In <strong>addition</strong> the that an RNN  <strong>allows to loop</strong> information and therefore be passed from one step of the network to the next.</p>
+<p id="pragma-line-18">The intuitive general processing equation for an RNN looks the following:</p>
+<center>
+<p id="pragma-line-22"><img src="RNN%20EQ.PNG" width="50%" alt="" /></p>
+</center>
+<blockquote id="pragma-line-27">
+<p id="pragma-line-27">Note, that it looks the same as in the &quot;<em>standard</em>&quot; Feedforward (FFNN) case except that the <strong>output is also a function of some previous cell state/output</strong> . Therefore you can think of RNN as a more general network structure and <u>FFNN just being a special case of RNN</u>. 😮 (We will see what's up with that in just a moment)</p>
+</blockquote>
+<p id="pragma-line-30">These loops make recurrent neural networks seem kind of mysterious. However, if you think a bit more, it turns out that they aren’t all that different than a normal neural network. A recurrent neural network can be thought of as multiple copies of the same network, each passing a message to a successor. Consider what happens if we <strong>unroll the loop in time</strong>:</p>
+<center>
+<p id="pragma-line-33"><img src="Unfolding.PNG" width="70%" alt="image" /></p>
+</center>
+<p id="pragma-line-36">This chain-like nature reveals that recurrent neural networks are <u>intimately related to sequences and lists</u>. They’re the natural architecture of neural network to use for such data.</p>
+<p id="pragma-line-38">If one looks what we have explained so far, the <strong>unrolling step hints a new freedom domain while designing</strong> neural networks architectures.  This leads in general to <strong>five</strong> different possibility's building up RNN Networks:</p>
+<p id="pragma-line-42"><img src="RNN%20compare.PNG" alt="" /></p>
+<blockquote id="pragma-line-45">
+<p id="pragma-line-45">There are also special structures like RNN-Autoencoders, where it is sometimes hard to recognize one structure depicted above, but they are usually just a combination of multiple standard models from above. In the Autoencoder case the encoder equals <strong>many to one</strong> and the decoder <strong>one to many</strong>. Therefore the RNN-Autoencoder is <strong>many to one (1)</strong></p>
+</blockquote>
+<p id="pragma-line-47">In general all of those architectures got their distinguished  use cases. And they certainly are used! In the last few years, there have been incredible success applying RNNs to a variety of problems:</p>
+<table id="pragma-line-50">
+<thead>
+<tr>
+<th style="text-align: center;" id="pragma-line-50">Text Translation</th>
+<th style="text-align: center;" id="pragma-line-50">Speech Recognition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;" id="pragma-line-52"><img src="Translation.PNG" width="95%" alt="" /></td>
+<td style="text-align: center;" id="pragma-line-52"><img src="Speech.PNG" width="90%" alt="" /></td>
+</tr>
+<tr>
+<td style="text-align: center;" id="pragma-line-53"><strong>Video Analysis</strong></td>
+<td style="text-align: center;" id="pragma-line-53"><strong>Image Captioning</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;" id="pragma-line-54"><img src="Image.gif" width="100%" alt="" /></td>
+<td style="text-align: center;" id="pragma-line-54"><img src="Caption.PNG" width="2000%" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<h2 id="rnn-on-non-sequence-data"><a id="pragma-line-63"></a>RNN on non Sequence Data</h2>
+<center>
+<blockquote id="pragma-line-69">
+<p id="pragma-line-69"><em><strong>&quot;Can we use RNN's only, to also cover of Non-Sequence Data?&quot;</strong></em></p>
+</blockquote>
+<p id="pragma-line-71">Sure! 😉</p>
+</center> 
+<p id="pragma-line-75">For example, we can recognize the <strong>one to one network</strong> as the <strong>standard FFNN</strong>, we have been previously used to recognize digits in pictures or even draw them.</p>
+<table id="pragma-line-77">
+<thead>
+<tr>
+<th style="text-align: center;" id="pragma-line-77"><img src="house_read2.gif" alt="" /></th>
+<th style="text-align: center;" id="pragma-line-77"><img src="house_generate.gif" width="67%" alt="" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;" id="pragma-line-79"><em>RNN learns to <strong>read Mnist numbers</strong> by taking a series of “glimpses”</em> <br/> <strong>discriminative Model</strong></td>
+<td style="text-align: center;" id="pragma-line-79"><em>RNN learns to <strong>draw Mnist numbers</strong> also using the &quot;gimps idea&quot; <br/> <strong>generative Model</strong></em></td>
+</tr>
+</tbody>
+</table>
+<h1 id="vanilla-rnn-in-detail"><a id="pragma-line-95"></a>Vanilla RNN in Detail</h1>
+<p id="pragma-line-97"><img src="RNN.PNG" alt="" /></p>
+<center>
+<h4 id="enough-introduction-lets-get-dirty-"><a id="pragma-line-101"></a>Enough Introduction, let's get dirty! 😉</h4>
+</center>
+<p id="pragma-line-105">In the previous section we have seen, that an RNN unrolled in time, like in the picture above, takes input values <code>x_t</code> and converts them into his cell state <code>h_t</code>.
+This is calculated as a with respect to a Transfer function (in general tanh), a <strong><u>learnable</u></strong> weight matrix and the previous cell state<code>h_t-1</code> that it gets to update every time step function is called.</p>
+<p id="pragma-line-108"><img src="RNN%20Single.PNG" alt="" /></p>
+<p id="pragma-line-112">Here is an minimal python implementation of the forward pass step function in a Vanilla RNN:</p>
+<pre><code id="pragma-line-114" class="language-markdown">class RNN:
+# ...
+def step(self, x):
+# update the hidden state
+    self.h = np.tanh(np.dot(self.W_hh, self.h) + np.dot(self.W_xh, x))
+    # compute the output vector
+    y = np.dot(self.W_hy, self.h)
+    return y
+</code></pre>
+<p id="pragma-line-125">You can <strong>recognize the equations</strong> from above in <strong>line 5</strong> and <strong>line 7</strong>. Thankfully we don't have to define the step functions and do the routing between different instances of  RNN-Cells ourselfs. 👍</p>
+<pre><code id="pragma-line-129" class="language-markdown">model = Sequential()
+model.add(RNN(hidden_size, input_shape=(1, look_back), return_sequences=True)
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
+</code></pre>
+<p id="pragma-line-137">Keras does all the Magic for us, defining the Feedforward path in just one line of code (line 2). Here we constructed a shallow RNN of one hidden layer with  <code>hidden_size</code> cells and <code>look_back</code> timesteps of our data.</p>
+<p id="pragma-line-139">The Term <code>return_sequences=True</code> tells Keras to produce an output in the output layer at every time step, which is important if we want to construct an <strong>one to many</strong> or <strong>many to many</strong> model. The Dense layer is just the layer used while doing regression tasks (that's why we use <code>mean_squared_error</code> as loss for the model, too). Just replace depending on the task you would like to do with our extracted RNN knowledge, e.g. Softmax and Cross-Entropy Loss in a classification task.</p>
+<p id="pragma-line-141"><br/><br/>
+<img style="float: left;" src="Multilayer%20RNN.PNG" width=40%>
+Of course we can stack multiple RNN-Cells  on top of each other like we did in the deep models we have seen so far.
+Everything we need to do for adding another RNN-Layer in Keras is:</p>
+<pre><code id="pragma-line-146" class="language-markdown">model = Sequential()
+model.add(RNN(hidden_size, input_shape=(1, look_back)))
+model.add(RNN(hidden_size))
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
+</code></pre>
+<p id="pragma-line-154">But <strong>stacking high numbers</strong> of RNN-Cells is usually very <strong>uncommon</strong>, due to a problem in the gradient flow of the backward pass of very deep networks.</p>
+<p id="pragma-line-156">The so called <strong>Vanishing/Exploding Gradient Problem</strong><u></u>.   To understand the problem in deep RNN networks we have to understand how the RNN loss is computed.
+<br/><br/><br/></p>
+<h2 id="vanilla-rnn-loss"><a id="pragma-line-161"></a>Vanilla RNN Loss</h2>
+<h3 id="backpropagation-through-time-bptt"><a id="pragma-line-162"></a>Backpropagation Through Time (BPTT)</h3>
+<p id="pragma-line-164">In general the loss of an RNN architecture is exactly the same as in the FFNN case, except of the addition, that it is not only back propagated between layers, but also through time, which is called  <strong>Backpropagation Through Time (BPTT)</strong>.</p>
+<p id="pragma-line-166"><img src="Vanishing%20Gradient.PNG" alt="" /></p>
+<p id="pragma-line-169">For one cell we run forward through entire sequence to compute loss, then backward through the entire sequence to compute gradient</p>
+<p id="pragma-line-171">Spatially, each timestep of the <strong>unrolled recurrent neural network</strong> may be <strong>seen as an additional layer</strong> and the internal state from the previous timestep is taken as an input on the subsequent timestep.</p>
+<h3 id="truncated-backpropagation-through-time-tbptt"><a id="pragma-line-174"></a>Truncated Backpropagation Through Time (TBPTT)</h3>
+<p id="pragma-line-175">BPTT can be computationally expensive as the number of timesteps increases.</p>
+<p id="pragma-line-177"><img src="RNN%20LOSS.PNG" alt="" />
+<strong>Truncated Backpropagation Through Time</strong> <strong>(TBPTT)</strong>, is a modified version of the BPTT training algorithm for recurrent neural networks where the sequence is processed periodically through chunks of the sequence (<code>k1</code> timesteps). Therefore the hidden States are carried forward forever but the the BPTT update is performed back for a equal or smaller fixed number of timesteps (<code>k2</code> time steps).</p>
+<p id="pragma-line-181"><img src="Trunq.PNG" alt="" /></p>
+<h2 id="vanishingexploding-gradient-problem"><a id="pragma-line-184"></a>Vanishing/Exploding Gradient Problem</h2>
+<p id="pragma-line-186">Beeing <strong>computationally expensive</strong> while training is <strong>not the only problem</strong> of <strong>deep RNN Networks</strong>. 😢</p>
+<p id="pragma-line-188">If input sequences are comprised of <strong>thousands of time steps</strong>, then <strong>this will be the number of derivatives required for a single weight update</strong>. This results in two phenomena:</p>
+<ol id="pragma-line-190">
+<li id="pragma-line-190"><strong>Exploding Gradient</strong><br/>
+If those derivatives are <code>&gt;1</code>, this will cause the weights <strong>explode</strong> (go to overflow) and make the model noisy, resulting in eventually <u>overshooting local minima</u>.
+<br/><br/>A solution to the  overshooting problem would be <strong>Gradient clipping</strong>.  Therefore we clip the gradients if its norm is too bigger that some threshold: <br/><br/></li>
+</ol>
+<center>
+<p id="pragma-line-196"><img src="Meme1.jpg" alt="" /></p>
+</center>
+<pre><code id="pragma-line-200" class="language-markdown">grad_norm = np.sum(grad * grad)
+if grad_norm &gt; threshold:
+   grad*=(threshold / grad_norm)
+</code></pre>
+<center>
+<p id="pragma-line-207"><img src="Gradient_Clipping.png" alt="" /></p>
+</center>
+<ol start="2" id="pragma-line-211">
+<li id="pragma-line-211"><strong>Vanishing Gradient</strong><br/>
+If those derivatives are <code>&lt;1</code>, this will cause the weights <strong>vanish</strong> (go to zero) and make learning very slow. Basically <u>the deeper the network the worse it get's</u> and for RNN we <strong>not only have &quot;deepnes&quot; in layers</strong>... 😕<br/><br/>
+With that in mind one can understand why RNN are not supposed to go deep in layers, because using RNN is supposed to tackle time related dependencies  in the data. <strong>Instead going deep in layers RNN usually go deep in time.</strong>
+<br/><br/>
+RNN's are not the only Cell type that suffers from vanishing gradient. In general <strong>all types</strong> of neural Networks <strong>are affected</strong> by the Problem, especially the ones using <strong>Sigmoid</strong> or <strong>Tanh</strong> Transfer function . In FFNN or CNN one can make the model mor resilient to the issue, by evoiding Sigm or Tanh, <u>using different functions</u> like <strong>ReLU</strong> instead. <br/><br/>
+Unfortunately even though the ReLU derivatives are either <code>0</code> or <code>1</code>, our <strong>overall derivative</strong> expression contains the <strong>weights multiplied</strong> in (see Note in the LSTM section in a few moments). Since the weights are generally initialized to be <code>&lt; 1 or &gt; 1</code>, this could contribute to vanishing or exploding gradients. <strong>Therefore using ReLu is not a complete fix</strong>, but a good tool for introducing <strong>resilience</strong>. CNN or MLP architectures, lacking of that time issue RNN's have, tend to be more shallow, with respect to RNN. That's why they tent look unaffected by vanishing gradient using the added  ReLu resilience. For (in a time sense) deep  RNN this usually doesn't apply. <strong>For this reason, LSTM was invented</strong>.</li>
+</ol>
+<blockquote id="pragma-line-218">
+<h3 id="note"><a id="pragma-line-218"></a>Note:</h3>
+<p id="pragma-line-219">RNN using ReLU can also result in non converging networks, because Cells can die from x beeing <code>&lt;1</code> and values can go to infinity from the fact that <strong>ReLUs are not bounded above</strong>, like <strong>Tanh/Sigmoid</strong> are. Therefore the <strong>activations</strong> (values in the neurons in the network, <strong>not the gradients</strong>) can in fact <strong>explode</strong> using extremely deep neural networks like recurrent neural networks are. During training, the whole network becomes fragile and unstable in that, if you update weights in the wrong direction even the slightest, the activations can reach those extreme points which is just another reason for not using ReLu in (already hardly converging) deep RNN.</p>
+</blockquote>
+<h1 id="long-short-term-memory-lstm"><a id="pragma-line-232"></a>Long Short Term Memory (LSTM)</h1>
+<p id="pragma-line-235">Long Short Term Memory , or LSTM, is a structure invented to <strong>tackle the Vanishing Gradient</strong> Problem for RNN. Therefore it introduces a new RNN architecture, the so called <em><strong>&quot;Gating Structure&quot;</strong></em> depicted below:</p>
+<center>
+<p id="pragma-line-241"><img src="LSTM.PNG" alt="" />
+<img src="explanation.PNG" center alt="image" /></p>
+</center>
+<p id="pragma-line-245">The structure is very similar to Vanilla RNN-Networks. But in LSTM two, instead of one, Cell states are preserved and four gates are introduced:</p>
+<img style="float: right;" src="LSTM2Gleichung.PNG" width=50%>
+<br/>
+<ul id="pragma-line-253">
+<li id="pragma-line-253"><p id="pragma-line-253"><strong>f</strong>:   Forget gate <br/></p>
+</li>
+<li id="pragma-line-254"><p id="pragma-line-254"><strong>i</strong>: Input gate<br/></p>
+</li>
+<li id="pragma-line-255"><p id="pragma-line-255"><strong>g</strong>: Gating gate<br/></p>
+</li>
+<li id="pragma-line-256"><p id="pragma-line-256"><strong>o</strong>: Output gate<br/></p>
+</li>
+<li id="pragma-line-258"><p id="pragma-line-258"><strong>c_t</strong>: Cell state, Internal State <br/></p>
+</li>
+<li id="pragma-line-259"><p id="pragma-line-259"><strong>h_t</strong>: Hidden State, Output State <br/></p>
+</li>
+</ul>
+<p id="pragma-line-263"><br/><br/></p>
+</center>
+<p id="pragma-line-267">Those <em><strong>&quot;gating values&quot;</strong></em> regulate the information flow between the internal Cell State <code>c_t</code> (<strong>Output gate 0</strong>)  and the the Hidden State <code>h_t</code>, which is the output given to the next LSTM timestep and the user, similar  to the RNN Case.</p>
+<p id="pragma-line-269">The internal cell information <code>c_t</code>, Is calculated using all the other gates, deciding</p>
+<p id="pragma-line-271">... how much information from <code>c_t-1</code>  to keep <strong>(Forget Gate f)</strong><br/>
+... either to add or substract information from <code>x_t</code>  <strong>(Gating Gate g)</strong><br/>
+... how much information from <code>x_t</code> to capture <strong>(Input Gate i)</strong><br/></p>
+<blockquote id="pragma-line-275">
+<p id="pragma-line-275">Calling the <code>h_t</code> the &quot;hidden&quot; state is sometimes misleading, since the &quot;hidden&quot; state is also propagated as an output, and therefor not tuely hidden. Instead calling the Cell state <code>c_t</code> a hidden state would appear more natural, since it is a fully internal (hidden) and therefor hidden in the network. I guess that's what you call a heritage designing LSTM on top of RNN. 😒</p>
+</blockquote>
+<p id="pragma-line-277">The key idea, that handles vanishing gradient in LSTM, is the introduction of some kind of <u><strong>Gradient Highway</strong></u>. (Red Arrow)
+There the gradients can be backpropagated freely just beeing dependent on the previous cell state and the forget gate output.</p>
+<center>
+<p id="pragma-line-282"><img src="LSTM2.PNG" width="50%" alt="" /></p>
+</center>
+<p id="pragma-line-286">Both values are expected to vary in size, not constantly beeing below or above 1 numerically. This makes RNN robust with respect to the Vanishing/Exploding Gradient Problem.</p>
+<blockquote id="pragma-line-288">
+<h3 id="ℹ-for-a-detailed-proof-see-this-exelent-read"><a id="pragma-line-288"></a>ℹ️ For a detailed proof see this exelent read:</h3>
+<p id="pragma-line-289"><strong>Bayer, Justin Simon. Learning Sequence Representations. Diss. München, Technische Universität München, Diss., 2015, 2015. - Page 14</strong></p>
+</blockquote>
+<blockquote id="pragma-line-292">
+<h4 id="also-there-is-a-good-quick-and-dirty-explanation-see"><a id="pragma-line-292"></a>Also there is a good quick and dirty explanation, see:</h4>
+<p id="pragma-line-293"><img src="Vanishing%20Gradient_Expalin.PNG" alt="" /></p>
+</blockquote>
+<h1 id="sophisticated-rnn-structures"><a id="pragma-line-303"></a>Sophisticated RNN Structures</h1>
+<h2 id="bidirectional-rnns"><a id="pragma-line-304"></a>Bidirectional RNNs</h2>
+<p id="pragma-line-305"><strong>Bidirectional RNNs</strong> are based on the idea that the output at time <code>t</code> may not only depend on the previous elements in the sequence, but also future elements. For example, to predict a missing word in a sequence you want to look at both the left and the right context. Bidirectional RNNs are quite simple. They are just <strong>two RNNs stacked on top of each other</strong>. The <strong>output</strong> is then computed based on the <strong>hidden state of both RNNs</strong>.</p>
+<center>
+<p id="pragma-line-310"><img src="Bidirectional.png" alt="" /></p>
+</center>
+<h2 id="rnn-with-attention"><a id="pragma-line-314"></a>RNN with Attention</h2>
+<p id="pragma-line-316">Most translation benchmarks are done on languages like French and German, which are quite similar to English (even Chinese word order is quite similar to English). But there are languages (like Japanese) where the last word of a sentence could be highly predictive of the first word in an English translation. <strong>Short: The structure of Language can be very different</strong>.
+In that case, reversing the input would make things worse. So, what’s an alternative? <strong>Attention Mechanisms.</strong></p>
+<p id="pragma-line-319">With an attention mechanism we <strong>no longer</strong> try <strong>encode</strong> the full source sentence <strong>into a fixed-length vector</strong>. Rather, we <strong>allow</strong> the decoder <strong>to “attend” to different parts of the source sentence</strong> at each step of the output generation. Importantly, we let the model learn what to attend to based on the input sentence and what it has produced so far. So, in languages that are pretty well aligned (like English and German) the decoder would probably choose to attend to things sequentially. Attending to the first word when producing the first English word, and so on. That’s what was done in Neural Machine Translation by Jointly Learning to Align and Translate and look as follows:</p>
+<center>
+<p id="pragma-line-323"><img src="Attention.png" width="70%" alt="" /></p>
+</center>
+<p id="pragma-line-326">Here, The y‘s are our translated words produced by the decoder, and the x‘s are our source sentence words. The above illustration uses a 2-ayer RNN, but that’s not important and you can just ignore the size of the model, just remind that the input layer is not shown in this picture, but the output layer is (dark brown squares).</p>
+<p id="pragma-line-328">The important part is that each decoder output word <code>y_t</code> now depends on a <strong>weighted combination of all the input states</strong> and the last state, <u>not just the last state</u>. The attention weights <code>a</code> are weights that define in <strong>how much</strong> of each input state <strong>should be considered for each output</strong>. So, if <code>a_{1,2}</code> is a large number (about 0.5 in the picture)
+, this would mean that the decoder pays a lot of attention to the second state in the source sentence while producing the third word of the target sentence.</p>
+<p id="pragma-line-331">A big <strong>advantage of attention</strong> is that it gives us the <strong>ability to interpret</strong> and <strong>visualize</strong> what the model is doing. For example, by visualizing the attention weight matrix a when a sentence is translated, we can understand how the model is translating:</p>
+<center>
+<p id="pragma-line-335"><img src="AttentionMatrix.png" alt="" /></p>
+</center>
+<p id="pragma-line-341">Here we see that while translating from French to English, the network attends sequentially to each input state, but sometimes it attends to two words at time while producing an output, as in translation “la Syrie” to “Syria” for example.</p>
+<p id="pragma-line-344"><br/><br/><br/></p>
+<center>
+<h3 id="now-your-probably-like"><a id="pragma-line-348"></a>Now your probably like:</h3>
+<p id="pragma-line-350"><img src="Meme2.PNG" width="40%" alt="" /></p>
+<p id="pragma-line-352"><br/><br/>
+😎 <strong><u>But we are here to help!</u></strong> 😎</p>
+<h1 id="questions"><a id="pragma-line-356"></a>Questions?</h1>
+
+    <!-- End Markdown Monster Content -->
+</div>
+</body>
+</html>
